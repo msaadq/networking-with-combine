@@ -28,6 +28,6 @@ let cancellable = NetworkingWithCombine.getImageFetcher(imageUrl: someURL)
                     // Add debug statements or triggers
                 }
             }, receiveValue: { value in
-                // Utilize the returned value
+                // Utilize the returned image
             })
 ```
