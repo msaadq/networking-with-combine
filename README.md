@@ -13,7 +13,7 @@ let cancellable = NetworkingWithCombine.getAPIResponseMapper(modelObject: Sample
                     // Add debug statements or triggers
                 }
             }, receiveValue: { value in
-                // Utilize the returned T object
+                // Utilize the returned SampleCodableClass object
             })
 ```
 
