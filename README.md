@@ -3,9 +3,9 @@
 This is an SPM library ([How to add Swift Package to XCode Project?](https://medium.com/better-programming/add-swift-package-dependency-to-an-ios-project-with-xcode-11-remote-local-public-private-3a7577fac6b2)) for making simple network calls using Combine framework.
 
 Available for:
-iOS 13.0 or above
-macOS 10.15 or above
-tvOS 13.0 or above
+* iOS 13.0 or above
+* macOS 10.15 or above
+* tvOS 13.0 or above
 
 Example usage with Codable Object:
 ```swift
