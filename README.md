@@ -7,6 +7,8 @@ Available for:
 * macOS 10.15 or above
 * tvOS 13.0 or above
 
+All the network calls return a Combine publisher of type AnyPublisher with APIError.
+
 Example usage with Codable Object:
 ```swift
 let cancellable = NetworkingWithCombine.getAPIResponseMapper(modelObject: SampleCodableClass.self, queryURL: someURL, params: nil)
