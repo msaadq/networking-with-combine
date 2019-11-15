@@ -7,9 +7,14 @@
 
 import Foundation
 import Combine
+import SwiftUI
+
+#if !os(macOS)
 import UIKit
+#endif
 
 // MARK: - APIService
+@available(OSX 10.15, *)
 @available(tvOS 13.0, *)
 @available(iOS 13.0, *)
 class NetworkingWithCombine {
@@ -24,7 +29,7 @@ class NetworkingWithCombine {
     }
 
     // MARK: - URL Request Mapper
-    static func getAPIResponseMapper<T: Codable>(modelObject: T.Type, queryURL: URL, params: [String: String]? = nil) -> AnyPublisher<T, NetworkingWithCombine.APIError> {
+    static func getAPIResponseMapper<T: Codable>(modelObject: T.Type, queryURL: URL, params: [String: String]? = nil) -> AnyPublisher<T, APIError> {
         var components = URLComponents(url: queryURL, resolvingAgainstBaseURL: true)!
         components.queryItems = []
         if let params = params {
@@ -49,20 +54,35 @@ class NetworkingWithCombine {
     }
 
     // MARK: - Image Fetcher
-    static func getImageFetcher(imageUrl: String) -> AnyPublisher<UIImage, Never> {
+    static func getImageFetcher(imageUrl: String) -> AnyPublisher<Image, APIError> {
         let components = URLComponents(url: URL(string: imageUrl)!, resolvingAgainstBaseURL: true)!
         var request = URLRequest(url: components.url!)
         request.httpMethod = "GET"
 
         return getRemoteDataPublisher(url: request)
             .tryMap { data in
+                
+                #if os(macOS)
+                guard let image = NSImage(data: data) else {
+                    print("Image decoding error")
+                    throw APIError.decodingError
+                }
+                
+                return Image(nsImage: image)
+                #else
                 guard let image = UIImage(data: data) else {
                     print("Image decoding error")
                     throw APIError.decodingError
                 }
-                return image
+                
+                return image(uiImage: image)
+                #endif
+                
             }
-            .replaceError(with: UIImage(named: "FailedPlaceholder")!)
+            .mapError { error in
+                print(error.localizedDescription)
+                return APIError.unknownError(error: error)
+            }
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
