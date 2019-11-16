@@ -75,7 +75,7 @@ class NetworkingWithCombine {
                     throw APIError.decodingError
                 }
                 
-                return image(uiImage: image)
+                return Image(uiImage: image)
                 #endif
                 
             }
@@ -106,3 +106,4 @@ class NetworkingWithCombine {
         .eraseToAnyPublisher()
     }
 }
+
